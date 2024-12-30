@@ -12,7 +12,7 @@ du2014 <-
     )
   ) |> 
   tidyr::unnest(cols = code) |> 
-  dplyr::select(emotion, emo_type = type, code) |> 
+  dplyr::select(emotion, emo_type, code) |> 
   dplyr::mutate(source = "du2014", .before = 1) |> 
   dplyr::mutate(
     .by = emotion,

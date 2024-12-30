@@ -51,14 +51,16 @@ expand_strings <- function(chr, delim = "+") {
 #' @export
 sort_by_numeric <- function(chr) {
   # Extract numeric parts from each element
-  numeric_parts <- sapply(chr, function(elem) {
-    # Use a regular expression to extract the numeric part
-    matches <- regmatches(elem, regexpr("\\d+", elem))
-    # Convert to numeric for sorting
-    as.numeric(matches) 
-  })
+  numeric_parts <- sapply(chr, extract_number)
   # Order the input vector based on the numeric parts
   out <- chr[order(numeric_parts, na.last = TRUE)]
   # Return
   out
+}
+
+extract_number <- function(str) {
+  # Use a regular expression to extract the numeric part
+  matches <- regmatches(str, regexpr("\\d+", str))
+  # Convert to numeric for sorting
+  as.numeric(matches) 
 }

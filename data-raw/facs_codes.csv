@@ -1,0 +1,74 @@
+﻿group,type,number,name,chapter
+Neutral,AU,0,neutral,
+Upper Face AUs,AU,1,inner brow raiser,2
+Upper Face AUs,AU,2,outer brow raiser,2
+Upper Face AUs,AU,4,brow lowerer,2
+Upper Face AUs,AU,5,upper lid raiser,2
+Upper Face AUs,AU,6,cheek raiser,2
+Upper Face AUs,AU,7,lid tightener,2
+Miscellaneous AUs,AU,8,lips toward each other,8
+Lower Face AUs,AU,9,nose wrinkler,4
+Lower Face AUs,AU,10,upper lip raiser,4
+Lower Face AUs,AU,11,nasolabial furrow deepener,6
+Lower Face AUs,AU,12,lip corner puller,6
+Lower Face AUs,AU,13,sharp lip puller,6
+Lower Face AUs,AU,14,dimpler,5
+Lower Face AUs,AU,15,lip corner depressor,4
+Lower Face AUs,AU,16,lower lip depress,4
+Lower Face AUs,AU,17,chin raiser,4
+Lower Face AUs,AU,18,lip pucker,7
+Miscellaneous AUs,AD,19,tongue show,8
+Lower Face AUs,AU,20,lip stretcher,5
+Miscellaneous AUs,AU,21,neck tightener,8
+Lower Face AUs,AU,22,lip funneler,7
+Lower Face AUs,AU,23,lip tightener,7
+Lower Face AUs,AU,24,lip presser,7
+Lip and Jaw Opening,AU,25,lips part,4
+Lip and Jaw Opening,AU,26,jaw drop,4
+Lip and Jaw Opening,AU,27,mouth stretch,4
+Lower Face AUs,AU,28,lips suck,7
+Miscellaneous AUs,AD,29,jaw thrust,8
+Miscellaneous AUs,AD,30,jaw sideways,8
+Miscellaneous AUs,AU,31,jaw clencher,8
+Miscellaneous AUs,AD,32,bite,8
+Miscellaneous AUs,AD,33,blow,8
+Miscellaneous AUs,AD,34,puff,8
+Miscellaneous AUs,AD,35,suck,8
+Miscellaneous AUs,AD,36,bulge,8
+Miscellaneous AUs,AD,37,lip wipe,8
+Miscellaneous AUs,AU,38,nostril dilator,8
+Miscellaneous AUs,AU,39,nostril compressor,8
+Gross Behavior,,40,sniff,8
+Upper Face AUs,AU,43,eye closure,2
+Upper Face AUs,AU,45,blink,2
+Upper Face AUs,AU,46,wink,2
+Gross Behavior,,50,speech,8
+Head Positions,,51,head turn left,9
+Head Positions,,52,head turn right,9
+Head Positions,,53,head up,9
+Head Positions,,54,head down,9
+Head Positions,,55,head tilt left,9
+Head Positions,,56,head tilt right,9
+Head Positions,,57,head forward,9
+Head Positions,,58,head back,9
+Eye Positions,,61,eyes turn left,9
+Eye Positions,,62,eyes turn right,9
+Eye Positions,,63,eyes up,9
+Eye Positions,,64,eyes down,9
+Eye Positions,,65,walleye,9
+Eye Positions,,66,crosseye,9
+Eye Movement,,68,eye roll,8
+Eye Movement,,69,look toward,8
+Visibility Codes,AU,70,brows and forehead not visible,8
+Visibility Codes,AU,71,eyes not visible,8
+Visibility Codes,AU,72,lower face not visible,8
+Visibility Codes,,73,entire face not visible,8
+Visibility Codes,,74,unscorable,8
+Gross Behavior,,80,swallow,8
+Gross Behavior,,81,chewing,8
+Gross Behavior,,82,shoulder shrug,8
+Head Movement,,83,head up and turned or tilted,8
+Gross Behavior,,84,head shake back and forth,8
+Gross Behavior,,85,head nod up and down,8
+Gross Behavior,,91,flash,8
+Gross Behavior,,92,partial flash,8
