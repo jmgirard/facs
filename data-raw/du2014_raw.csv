@@ -1,37 +1,22 @@
-﻿emotion,type,number,code,special
-anger,prototype,1,4+7+24,
-anger,prototype,2,4+7+10+24,
-anger,prototype,3,4+7+17+24,
-anger,prototype,4,4+7+23+24,
-anger,prototype,5,4+7+10+17+24,
-anger,prototype,6,4+7+10+23+24,
-anger,prototype,7,4+7+17+23+24,
-anger,prototype,8,4+7+10+17+23+24,
-awe,prototype,1,1+2+5+25,
-awe,prototype,2,1+2+4+5+25,
-awe,prototype,3,1+2+5+20+25,
-awe,prototype,4,1+2+5+25+26,
-awe,prototype,5,1+2+4+5+20+25,
-awe,prototype,6,1+2+4+5+25+26,
-awe,prototype,7,1+2+5+20+25+26,
-awe,prototype,8,1+2+4+5+20+25+26,
-disgust,prototype,1,9+10+17,
-disgust,prototype,2,4+9+10+17,
-disgust,prototype,3,9+10+17+24,
-disgust,prototype,4,4+9+10+17+24,
-fear,prototype,1,1+4+20+25,
-fear,prototype,2,1+2+4+20+25,
-fear,prototype,3,1+4+20+25+26,
-fear,prototype,4,1+2+4+20+25+26,
-happy,prototype,1,12+25,
-happy,variant,2,6+12+25,
-sad,prototype,1,4+11+15,
-sad,prototype,2,1+4+11+15,
-sad,prototype,3,4+6+11+15,
-sad,prototype,4,4+11+15+17,
-sad,prototype,5,1+4+6+11+15,
-sad,prototype,6,1+4+11+15+17,
-sad,prototype,7,4+6+11+15+17,
-sad,prototype,8,1+4+6+11+15+17,
-surprise,prototype,1,1+2+25+26,
-surprise,prototype,2,1+2+5+25+26,
+﻿emotion,type,required,optional
+happy,basic,"12,25",6
+sad,basic,"4,15","1,6,11,17"
+fearful,basic,"1,4,20,25","2,5,26"
+angry,basic,"4,7,24","10,17,23"
+surprised,basic,"1,2,25,26",5
+disgusted,basic,"9,10,17","4,24"
+happily surprised,compound,"1,2,12,25","5,26"
+happily disgusted,compound,"10,12,25","4,6,9"
+sadly fearful,compound,"1,4,20,25","2,5,6,15"
+sadly angry,compound,"4,15","6,7,11,17"
+sadly surprised,compound,"1,4,25,26","2,6"
+sadly disgusted,compound,"4,10","1,6,9,11,15,17,25"
+fearfully angry,compound,"4,20,25","5,7,10,11"
+fearfully surprised,compound,"1,2,5,20,25","4,10,11,26"
+fearfully disgusted,compound,"1,4,10,20,25","2,5,6,9,15"
+angrily surprised,compound,"4,25,26","5,7,10"
+angrily disgusted,compound,"4,10,17","7,9,24"
+disgustedly surprised,compound,"1,2,5,10","4,9,17,24"
+appalled,compound,"4,10","6,9,17,24"
+hatred,compound,"4,10","7,9,17,24"
+awed,compound,"1,2,5,25","4,20,26"

@@ -9,7 +9,7 @@ expand_optional <- function(required, optional, stringify = TRUE) {
   # Combine each optional subset with the required elements
   out <- lapply(
     X = optional_subsets, 
-    FUN = function(opt_subset) unique(sort(c(required, opt_subset)))
+    FUN = function(opt_subset) unique(sort_by_numeric(c(required, opt_subset)))
   )
   # If requested, stringify the output
   if (stringify) {
@@ -40,6 +40,25 @@ get_subsets <- function(vec) {
   } else {
     out <- list(vector(mode = typeof(vec), length = 0))
   }
+  # Return
+  out
+}
+
+expand_strings <- function(chr, delim = "+") {
+  strsplit(chr, split = delim, fixed = TRUE)
+}
+
+#' @export
+sort_by_numeric <- function(chr) {
+  # Extract numeric parts from each element
+  numeric_parts <- sapply(chr, function(elem) {
+    # Use a regular expression to extract the numeric part
+    matches <- regmatches(elem, regexpr("\\d+", elem))
+    # Convert to numeric for sorting
+    as.numeric(matches) 
+  })
+  # Order the input vector based on the numeric parts
+  out <- chr[order(numeric_parts, na.last = TRUE)]
   # Return
   out
 }
