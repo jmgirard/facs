@@ -2,14 +2,12 @@ facs_codes <- read.csv("data-raw/facs_codes.csv")
 usethis::use_data(facs_codes, overwrite = TRUE)
 
 facs_prefixes <- c(
-  "Bi", # bilateral (assumed)
-  "U",  # unilateral
+  "U",  # unilateral (generic)
   "L",  # unilateral: left only
   "R",  # unilateral: right only
   "T",  # unilateral: top only
   "B",  # unilateral: bottom only
-  "S",  # symmetrical (assumed)
-  "A",  # asymmetrical 
+  "A",  # asymmetrical (generic)
   "V",  # asymmetrical: left greater by 1
   "W",  # asymmetrical: left greater by 2
   "X",  # asymmetrical: left greater by 3
@@ -39,6 +37,8 @@ facs_suffixes <- c(
 )
 usethis::use_data(facs_suffixes, overwrite = TRUE)
 
-facs_characters <- "A-Z0-9\\+"
+facs_characters <- paste0(
+  c(sort(unique(c(facs_prefixes, facs_suffixes))), "0-9\\+"), collapse = ""
+)
 usethis::use_data(facs_characters, overwrite = TRUE)
 
