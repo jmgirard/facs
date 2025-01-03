@@ -32,15 +32,11 @@ pak::pak("jmgirard/protofacs")
 ```
 
 ## Example
-
 ```{r}
 library("protofacs")
-# Clean up messy codes and set class
-messy_codes <- c(" 12B+ 1 +L2", "T20 + 25")
-clean_codes <- coding(messy_codes)
-clean_codes
 ```
 
+### Step 1: Define your coding scheme
 ```{r}
 # Which behaviors were coded for occurrence, intensity, and asymmetry?
 my_scheme <- scheme(
@@ -53,13 +49,22 @@ my_scheme <- scheme(
 my_scheme
 ```
 
+### Step 2: Convert your coding from character
 ```{r}
-# Extract occurrence matrix
+# Clean up messy codes and set class
+messy_codes <- c(" 12B+ 1 +L2", "T20 + 25")
+clean_codes <- coding(messy_codes)
+clean_codes
+```
+
+### Step 3: Generate coding matrixes
+```{r}
+# Generate occurrence matrix
 occurrence(clean_codes, my_scheme)
 
-# Extract intensity matrix
+# Generate intensity matrix
 intensity(clean_codes, my_scheme)
 
-# Extract asymmetry matrix
+# Generate asymmetry matrix
 asymmetry(clean_codes, my_scheme)
 ```
