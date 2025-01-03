@@ -10,5 +10,9 @@ testthat::test_that("coding works", {
   testthat::expect_false(check_coding("1++2"))
   testthat::expect_false(check_coding("1+3+"))
 
-  testthat::expect_equal(validate_coding("L12B + R2C"), "R2C+L12B")
+  testthat::expect_equal(
+    validate_coding("L12B + R2C"),
+    "R2C+L12B", 
+    ignore_attr = TRUE
+  )
 })

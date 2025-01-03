@@ -1,0 +1,65 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# protofacs
+
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+<!-- badges: end -->
+
+The goal of protofacs is to provide tools for storing and manipulating data from
+the Facial Action Coding System (FACS) 2002 edition.
+
+## Installation
+
+You can install the development version of protofacs from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("jmgirard/protofacs")
+```
+
+## Example
+
+```{r}
+library("protofacs")
+# Clean up messy codes and set class
+messy_codes <- c(" 12B+ 1 +L2", "T20 + 25")
+clean_codes <- coding(messy_codes)
+clean_codes
+```
+
+```{r}
+# Which behaviors were coded for occurrence, intensity, and asymmetry?
+my_scheme <- scheme(
+  list(
+    occurrence = c(1, 2, 4, 6, 9, 10, 12, 14, 20, 25),
+    intensity  = c(6, 12),
+    asymmetry  = c(2, 6, 10, 12, 14, 20)
+  )
+)
+my_scheme
+```
+
+```{r}
+# Extract occurrence matrix
+occurrence(clean_codes, my_scheme)
+
+# Extract intensity matrix
+intensity(clean_codes, my_scheme)
+
+# Extract asymmetry matrix
+asymmetry(clean_codes, my_scheme)
+```

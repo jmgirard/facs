@@ -1,6 +1,6 @@
 #' @method tidy facs_coding
 #' @export
-tidy.facs_coding <- function(x) {
+tidy.facs_coding <- function(x, ...) {
   lapply(x, parse_coding)
 }
 
@@ -67,7 +67,7 @@ occurrence <- function(x, scheme) {
   tidy_x <- tidy(x)
   for (i in seq_along(tidy_x)) {
     df <- tidy_x[[i]]
-    out[i, ] <- as.integer(scheme$intensity %in% df$occurrence)
+    out[i, ] <- as.integer(scheme$occurrence %in% df$occurrence)
   }
   # Return
   out
@@ -128,9 +128,9 @@ asymmetry <- function(x, scheme) {
       coded_occ <- df$occurrence[[j]]
       coded_sym <- df$asymmetry[[j]]
       # Find the column index in the output matrix
-      if (coded_occ %in% scheme$intensity) {
+      if (coded_occ %in% scheme$asymmetry) {
         coded_sym <- ifelse(is.na(coded_sym), "S", coded_sym)
-        out[i, which(scheme$intensity == coded_occ)] <- coded_sym
+        out[i, which(scheme$asymmetry == coded_occ)] <- coded_sym
       }
     }
   }

@@ -58,4 +58,5 @@ check_coding <- function(x) {
 #' @export
 print.facs_coding <- function(x, ...) {
   print.default(unclass(x))
+  cat("FACS Coding\n")
 }
