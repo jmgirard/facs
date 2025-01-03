@@ -8,7 +8,7 @@ expand_optional <- function(required, optional, stringify = TRUE) {
   optional_subsets <- get_subsets(optional)
   # Combine each optional subset with the required elements
   out <- lapply(
-    X = optional_subsets, 
+    X = optional_subsets,
     FUN = function(opt_subset) unique(sort_by_numeric(c(required, opt_subset)))
   )
   # If requested, stringify the output
@@ -19,7 +19,7 @@ expand_optional <- function(required, optional, stringify = TRUE) {
     )
     out <- unlist(out, recursive = FALSE)
   }
-  # Return 
+  # Return
   out
 }
 
@@ -48,7 +48,6 @@ expand_strings <- function(chr, delim = "+") {
   strsplit(chr, split = delim, fixed = TRUE)
 }
 
-#' @export
 sort_by_numeric <- function(chr) {
   # Extract numeric parts from each element
   numeric_parts <- sapply(chr, extract_number)
@@ -60,7 +59,7 @@ sort_by_numeric <- function(chr) {
 
 extract_number <- function(str) {
   # Use a regular expression to extract the numeric part
-  matches <- regmatches(str, regexpr("\\d+", str))
+  matches <- regmatches(str, regexpr("\\d{1,2}", str))
   # Convert to numeric for sorting
-  as.numeric(matches) 
+  as.numeric(matches)
 }

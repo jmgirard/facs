@@ -78,3 +78,10 @@ asymmetry(clean_codes, my_scheme)
 #> 1 "L" NA NA  "S" NA  NA 
 #> 2 NA  NA NA  NA  NA  "T"
 ```
+
+### Step 4: Compute occurrence agreement
+
+``` r
+compare_occurrence(coding("1+4+9"), coding("1+4+10"))
+#> [1] 0.6666667
+```
