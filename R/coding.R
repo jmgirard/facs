@@ -1,7 +1,7 @@
 # coding -----------------------------------------------------------------------
 new_coding <- function(x = character()) {
   stopifnot(is.character(x))
-  out <- structure(y, class = "facs_coding")
+  out <- structure(x, class = "facs_coding")
   out
 }
 
@@ -30,12 +30,12 @@ validate_coding <- function(x) {
   x <- lapply(x, function(z) paste(z, collapse = "+"))
   x <- unlist(x)
   # Return
-  x
+  new_coding(x)
 }
 
 #' @export
 coding <- function(x) {
-  validate_coding(new_coding(x))
+  validate_coding(x)
 }
 
 #' @export
@@ -52,4 +52,10 @@ check_coding <- function(x) {
     "]?)*$"
   )
   grepl(pattern, x)
+}
+
+#' @method print facs_coding
+#' @export
+print.facs_coding <- function(x, ...) {
+  print.default(unclass(x))
 }
