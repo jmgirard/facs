@@ -2,6 +2,7 @@
 
 S3method(print,facs_scheme)
 S3method(summary,facs_scheme)
+export(check_coding)
 export(coding)
 export(compare_occurrence)
 export(expand_optional)
