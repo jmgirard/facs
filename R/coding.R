@@ -17,7 +17,7 @@ validate_coding <- function(x) {
   if (!all(ccx)) {
     cli::cli_abort(
       paste0(
-        "The following elements of `x` are not valid FACS codes: ", 
+        "The following elements of `x` are not valid FACS codes: ",
         paste(paste0('(', which(!ccx), ') "', x[!ccx], '"'), collapse = ", ")
       )
     )
@@ -29,6 +29,7 @@ validate_coding <- function(x) {
   # Recombine into string
   x <- lapply(x, function(z) paste(z, collapse = "+"))
   x <- unlist(x)
+  x[x == "NA"] <- NA_character_
   # Return
   new_coding(x)
 }
@@ -41,17 +42,17 @@ coding <- function(x) {
 #' @export
 check_coding <- function(x) {
   pattern <- paste0(
-    "^(?:[", 
-    paste(facs_prefixes, collapse = ""), 
-    "]?\\d{1,2}[", 
-    paste(facs_suffixes, collapse = ""),
-    "]?)(?:\\+[", 
+    "^(?:[",
     paste(facs_prefixes, collapse = ""),
-    "]?\\d{1,2}[", 
+    "]?\\d{1,2}[",
+    paste(facs_suffixes, collapse = ""),
+    "]?)(?:\\+[",
+    paste(facs_prefixes, collapse = ""),
+    "]?\\d{1,2}[",
     paste(facs_suffixes, collapse = ""),
     "]?)*$"
   )
-  grepl(pattern, x)
+  grepl(pattern, x) | is.na(x)
 }
 
 #' @method print facs_coding

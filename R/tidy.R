@@ -47,6 +47,7 @@ extract_suffixes <- function(x) {
 }
 
 find_matches <- function(x, pattern) {
+  if (all(is.na(x))) return(NA_character_)
   matches <- regexpr(pattern, x, perl = TRUE)
   result <- rep(NA_character_, length(x))
   result[matches > 0] <- regmatches(x, matches)
@@ -67,7 +68,12 @@ occurrence <- function(x, scheme) {
   tidy_x <- tidy(x)
   for (i in seq_along(tidy_x)) {
     df <- tidy_x[[i]]
-    out[i, ] <- as.integer(scheme$occurrence %in% df$occurrence)
+    # TODO: Enforce partial NAs when using obscurance codes
+    if (all(is.na(df$occurrence))) {
+      out[i, ] <- rep(NA_integer_, times = length(scheme$occurrence))
+    } else {
+      out[i, ] <- as.integer(scheme$occurrence %in% df$occurrence)
+    }
   }
   # Return
   out
@@ -92,12 +98,19 @@ intensity <- function(x, scheme, type = "numerical") {
     for (j in seq_len(nrow(df))) {
       coded_occ <- df$occurrence[[j]]
       coded_int <- df$intensity[[j]]
-      # Find the column index in the output matrix
-      if (coded_occ %in% scheme$intensity) {
-        if (type == "numerical") {
-          coded_int <- match(coded_int, c("A", "B", "C", "D", "E"))
+      if (all(is.na(coded_occ))) {
+        out[i, ] <- rep(
+          ifelse(type == "numerical", NA_integer_, NA_character_),
+          times = length(scheme$intensity)
+        )
+      } else {
+        # Find the column index in the output matrix
+        if (coded_occ %in% scheme$intensity) {
+          if (type == "numerical") {
+            coded_int <- match(coded_int, c("A", "B", "C", "D", "E"))
+          }
+          out[i, which(scheme$intensity == coded_occ)] <- coded_int
         }
-        out[i, which(scheme$intensity == coded_occ)] <- coded_int
       }
     }
   }
@@ -127,10 +140,14 @@ asymmetry <- function(x, scheme) {
     for (j in seq_len(nrow(df))) {
       coded_occ <- df$occurrence[[j]]
       coded_sym <- df$asymmetry[[j]]
-      # Find the column index in the output matrix
-      if (coded_occ %in% scheme$asymmetry) {
-        coded_sym <- ifelse(is.na(coded_sym), "S", coded_sym)
-        out[i, which(scheme$asymmetry == coded_occ)] <- coded_sym
+      if (all(is.na(coded_occ))) {
+        out[i, ] <- rep(NA_character_, times = length(scheme$asymmetry))
+      } else {
+        # Find the column index in the output matrix
+        if (coded_occ %in% scheme$asymmetry) {
+          coded_sym <- ifelse(is.na(coded_sym), "S", coded_sym)
+          out[i, which(scheme$asymmetry == coded_occ)] <- coded_sym
+        }
       }
     }
   }
