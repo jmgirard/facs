@@ -82,31 +82,34 @@ asymmetry(clean_codes, my_scheme)
 ### Step 4: Compute occurrence agreement
 
 ``` r
-ad <- agree_description(coding("1+4+9"), coding("1+4+10"), scheme = my_scheme)
+coder1 <- coding(c("1+4+9", "6+7+12+25"))
+coder2 <- coding(c("1+4+10", "6+12+25"))
+coder3 <- coding(c(NA, "7+12+25"))
+ad <- agree_description(coder1, coder2, coder3, scheme = my_scheme)
 print(ad)
-#> [1] 0.6666667
+#> [1] 0.7708333
 summary(ad)
 #> # Counts
-#> Events = 1
+#> Events = 2
 #> Codes  = 10
-#> Coders = 2
+#> Coders = 3
 #> 
 #> # Overall
-#> 0.667
+#> 0.771
 #> 
 #> # Per Event
-#>    E1 
-#> 0.667 
+#>    E1    E2 
+#> 0.667 0.875 
 #> 
 #> # Per Code
-#> O01 O04 O09 O10 
-#>   1   1   0   0 
+#> O01 O04 O06 O09 O10 O12 O25 
+#> 1.0 1.0 0.5 0.0 0.0 1.0 1.0 
 #> 
 #> # Per Pair
-#> C1_C2 
-#> 0.667 
+#> C1_C2 C1_C3 C2_C3 
+#> 0.833 0.800 0.800 
 #> 
 #> # Drop One
-#> drop_C1 drop_C2 
-#>      NA      NA
+#> drop_C1 drop_C2 drop_C3 
+#>   0.800   0.800   0.833
 ```
