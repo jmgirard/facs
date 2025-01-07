@@ -101,7 +101,7 @@ agree_drop_one <- function(occ_rel) {
 }
 
 agree_overall <- function(occ_rel) {
-  mean(agree_per_event(occ_rel))
+  mean(agree_per_event(occ_rel), na.rm = TRUE)
 }
 
 #' @export
@@ -161,7 +161,7 @@ calc_specific_agreement <- function(mat, category = 1) {
   # Select those objects with two or more codings
   mat_p <- mat[rowSums(!is.na(mat)) >= 2, ]
   # Count the number of coders assigning each object to the selected category
-  r_ik <- rowSums(mat_p == category)
+  r_ik <- rowSums(mat_p == category, na.rm = TRUE)
   # Count the number of coders assigning each object to any category
   r_i <- rowSums(!is.na(mat_p))
   # Calculate specific agreement
