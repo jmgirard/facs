@@ -1,4 +1,4 @@
-﻿emotion,type,required,alternatives,special
+﻿emotion,config_type,required,alternatives,special
 amusement,ICP,6+7+12+16+25+53,"26,27",
 awe,ICP,1+2+5+12+25+53,"26,27",
 contentment,ICP,12+43,,deep breath

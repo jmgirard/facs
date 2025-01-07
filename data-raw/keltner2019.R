@@ -1,4 +1,12 @@
 ## code to prepare `keltner2019` dataset goes here
-x <- read.csv("data-raw/keltner2019_raw.csv")
-keltner2019 <- dplyr::mutate(x, .before = 1, source = "keltner2019")
+keltner2019 <-
+  read.csv("data-raw/keltner2019_raw.csv") |>
+  dplyr::rename(code = required) |>
+  dplyr::mutate(source = "keltner2019", .before = 1) |>
+  dplyr::mutate(
+    .by = emotion,
+    .after = code,
+    config_num = dplyr::row_number(),
+    config_type = "prototype"
+  )
 usethis::use_data(keltner2019, overwrite = TRUE)

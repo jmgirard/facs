@@ -1,19 +1,19 @@
-﻿emotion,type,required,special
-amusement,example,6+7+12+25+26+53,
-anger,example,4+5+17+23+24,
-boredom,example,43+55,"slouched posture, head on hand"
-confusion,example,4+7+56,
-contentment,example,12+43,
-coyness,example,6+7+12+25+26+52+54+61,
-desire,example,19+25+26+43,
-disgust,example,7+9+19+25+26,
-embarrassment,example,7+12+15+52+54+64,face touch
-fear,example,1+2+4+5+7+20+25,
-happiness,example,6+7+12+25+26,
-interest,example,1+2+12,
-pain,example,4+6+7+9+17+18+23+24,
-pride,example,53+64,
-sadness,example,1+4+6+15+17,
-shame,example,54+64,
-surprise,example,1+2+5+25+26,
-sympathy,example,1+17+24+57,
+﻿emotion,required,special
+amusement,6+7+12+25+26+53,
+anger,4+5+17+23+24,
+boredom,43+55,"slouched posture, head on hand"
+confusion,4+7+56,
+contentment,12+43,
+coyness,6+7+12+25+26+52+54+61,
+desire,19+25+26+43,
+disgust,7+9+19+25+26,
+embarrassment,7+12+15+52+54+64,face touch
+fear,1+2+4+5+7+20+25,
+happiness,6+7+12+25+26,
+interest,1+2+12,
+pain,4+6+7+9+17+18+23+24,
+pride,53+64,
+sadness,1+4+6+15+17,
+shame,54+64,
+surprise,1+2+5+25+26,
+sympathy,1+17+24+57,
