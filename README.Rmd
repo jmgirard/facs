@@ -71,5 +71,7 @@ asymmetry(clean_codes, my_scheme)
 
 ### Step 4: Compute occurrence agreement
 ```{r}
-compare_occurrence(coding("1+4+9"), coding("1+4+10"))
+ad <- agree_description(coding("1+4+9"), coding("1+4+10"), scheme = my_scheme)
+print(ad)
+summary(ad)
 ```

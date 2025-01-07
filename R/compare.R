@@ -62,7 +62,17 @@ agree_per_event <- function(occ_rel) {
   out <- vector(mode = "double", length = n_events)
   names(out) <- dimnames(occ_rel)[[1]]
   for (i in seq_len(n_events)) {
-    out[[i]] <- calc_specific_agreement(occ_rel[i, , ], category = 1)
+    # Create analysis matrix explicitly to avoid drop errors
+    code_coder_matrix <- matrix(
+      occ_rel[i, , , drop = FALSE],
+      nrow = dim(occ_rel)[[2]],
+      ncol = dim(occ_rel)[[3]],
+      dimnames = list(
+        dimnames(occ_rel)[[2]],
+        dimnames(occ_rel)[[3]]
+      )
+    )
+    out[[i]] <- calc_specific_agreement(code_coder_matrix, category = 1)
   }
   out
 }
@@ -72,7 +82,17 @@ agree_per_code <- function(occ_rel) {
   out <- vector(mode = "double", length = n_codes)
   names(out) <- dimnames(occ_rel)[[2]]
   for (i in seq_along(out)) {
-    out[[i]] <- calc_specific_agreement(occ_rel[, i, ], category = 1)
+    # Create analysis matrix explicitly to avoid drop errors
+    event_coder_matrix <- matrix(
+      occ_rel[, i, , drop = FALSE],
+      nrow = dim(occ_rel)[[1]],
+      ncol = dim(occ_rel)[[3]],
+      dimnames = list(
+        dimnames(occ_rel)[[1]],
+        dimnames(occ_rel)[[3]]
+      )
+    )
+    out[[i]] <- calc_specific_agreement(event_coder_matrix, category = 1)
   }
   out[is.nan(out)] <- NA_real_
   out
@@ -84,7 +104,7 @@ agree_per_pair <- function(occ_rel) {
   out <- vector(mode = "double", length = n_pairs)
   names(out) <- apply(pairs, MARGIN = 2, function(x) paste(x, collapse = "_"))
   for (i in seq_along(out)) {
-    out[[i]] <- agree_overall(occ_rel[, , pairs[, i]])
+    out[[i]] <- agree_overall(occ_rel[, , pairs[, i], drop = FALSE])
   }
   out
 }
@@ -95,7 +115,7 @@ agree_drop_one <- function(occ_rel) {
   names(out) <- paste0("drop_", dimnames(occ_rel)[[3]])
   if (n_coders < 3) return(out)
   for (i in seq_along(out)) {
-    out[[i]] <- agree_overall(occ_rel[, , -i])
+    out[[i]] <- agree_overall(occ_rel[, , -i, drop = FALSE])
   }
   out
 }
@@ -117,15 +137,70 @@ agree_description <- function(
     event_names = event_names,
     coder_names = coder_names
   )
-
-  # TODO: Make an S3 class and methods for this
-  list(
+  new_agree(
     overall = agree_overall(occ_rel),
     per_event = agree_per_event(occ_rel),
     per_code = agree_per_code(occ_rel),
     per_pair = agree_per_pair(occ_rel),
-    drop_one = agree_drop_one(occ_rel)
+    drop_one = agree_drop_one(occ_rel),
+    scheme = scheme
   )
+}
+
+# agree ------------------------------------------------------------------------
+new_agree <- function(
+  overall = numeric(),
+  per_event = numeric(),
+  per_code = numeric(),
+  per_pair = numeric(),
+  drop_one = numeric(),
+  scheme = list()
+) {
+  stopifnot(is.numeric(overall))
+  stopifnot(is.numeric(per_event))
+  stopifnot(is.numeric(per_code))
+  stopifnot(is.numeric(per_pair))
+  stopifnot(is.numeric(drop_one))
+  stopifnot(is.list(scheme), class(scheme) == "facs_scheme")
+  out <- structure(
+    list(
+      overall = overall,
+      per_event = per_event,
+      per_code = per_code,
+      per_pair = per_pair,
+      drop_one = drop_one,
+      scheme = scheme
+    ),
+    class = "facs_agree"
+  )
+  out
+}
+
+#' @method print facs_agree
+#' @export
+print.facs_agree <- function(x, ...) {
+  print.default(x$overall)
+}
+
+#' @method summary facs_agree
+#' @export
+summary.facs_agree <- function(object, digits = 3, ...) {
+  cat(
+    "# Counts\n",
+    "Events = ", length(object$per_event), "\n",
+    "Codes  = ", length(object$per_code), "\n",
+    "Coders = ", length(object$drop_one), "\n",
+    sep = ""
+  )
+  cat("\n# Overall", round(object$overall, digits), sep = "\n")
+  cat("\n# Per Event\n")
+  print(object$per_event, digits = digits)
+  cat("\n# Per Code\n")
+  print(object$per_code[!is.na(object$per_code)], digits = digits)
+  cat("\n# Per Pair\n")
+  print(object$per_pair, digits = digits)
+  cat("\n# Drop One\n")
+  print(object$drop_one, digits = digits)
 }
 
 #' Calculate specific agreement
@@ -159,7 +234,7 @@ calc_specific_agreement <- function(mat, category = 1) {
   stopifnot(is.matrix(mat))
   stopifnot(length(category) == 1 && !is.na(category))
   # Select those objects with two or more codings
-  mat_p <- mat[rowSums(!is.na(mat)) >= 2, ]
+  mat_p <- mat[rowSums(!is.na(mat)) >= 2, , drop = FALSE]
   # Count the number of coders assigning each object to the selected category
   r_ik <- rowSums(mat_p == category, na.rm = TRUE)
   # Count the number of coders assigning each object to any category

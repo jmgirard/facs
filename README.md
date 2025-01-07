@@ -62,26 +62,51 @@ clean_codes
 ``` r
 # Generate occurrence matrix
 occurrence(clean_codes, my_scheme)
-#>   O1 O2 O4 O6 O9 O10 O12 O14 O20 O25
-#> 1  1  1  0  0  0   0   1   0   0   0
-#> 2  0  0  0  0  0   0   0   0   1   1
+#>   O01 O02 O04 O06 O09 O10 O12 O14 O20 O25
+#> 1   1   1   0   0   0   0   1   0   0   0
+#> 2   0   0   0   0   0   0   0   0   1   1
 
 # Generate intensity matrix
 intensity(clean_codes, my_scheme)
-#>   I6 I12
-#> 1  0   2
-#> 2  0   0
+#>   I06 I12
+#> 1   0   2
+#> 2   0   0
 
 # Generate asymmetry matrix
 asymmetry(clean_codes, my_scheme)
-#>   A2  A6 A10 A12 A14 A20
-#> 1 "L" NA NA  "S" NA  NA 
-#> 2 NA  NA NA  NA  NA  "T"
+#>   A02 A06 A10 A12 A14 A20
+#> 1 "L" NA  NA  "S" NA  NA 
+#> 2 NA  NA  NA  NA  NA  "T"
 ```
 
 ### Step 4: Compute occurrence agreement
 
 ``` r
-compare_occurrence(coding("1+4+9"), coding("1+4+10"))
+ad <- agree_description(coding("1+4+9"), coding("1+4+10"), scheme = my_scheme)
+print(ad)
 #> [1] 0.6666667
+summary(ad)
+#> # Counts
+#> Events = 1
+#> Codes  = 10
+#> Coders = 2
+#> 
+#> # Overall
+#> 0.667
+#> 
+#> # Per Event
+#>    E1 
+#> 0.667 
+#> 
+#> # Per Code
+#> O01 O04 O09 O10 
+#>   1   1   0   0 
+#> 
+#> # Per Pair
+#> C1_C2 
+#> 0.667 
+#> 
+#> # Drop One
+#> drop_C1 drop_C2 
+#>      NA      NA
 ```
