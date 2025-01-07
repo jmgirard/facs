@@ -18,9 +18,11 @@ Compare two FACS codings on which AUs are present vs. absent. Uses the Wexler
 formula recommended in the 2002 FACS Investigator's Guide.
 }
 \details{
-Let \eqn{P} be the number of AUs that occur in both the \code{x} and \code{y} codings
-and let \eqn{Q} be the total number of AUs that occur in \code{x} and \code{y}
-(counting repeated AUs twice). Wexler's formula is simply \eqn{2P/Q}.
+Let \eqn{P} be the number of (unique) AUs that occur in both the \code{x} and \code{y}
+codings and let \eqn{Q} be the total number of (non-unique) AUs that occur in
+\code{x} and \code{y}. Wexler's formula is simply \eqn{2P/Q}.
+
+\deqn{A = \frac{2|A \cap B|}{|A| + |B|}}
 }
 \examples{
 compare_occurrence(coding("1+4+9"), coding("1+4+10"))

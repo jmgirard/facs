@@ -22,9 +22,9 @@ parse_coding <- function(x) {
 
 extract_prefixes <- function(x) {
   find_matches(
-    x, 
+    x,
     pattern = paste0(
-      "^[", 
+      "^[",
       paste(facs_prefixes, collapse = ""),
       "](?=\\d{1,2})"
     )
@@ -37,10 +37,10 @@ extract_numcodes <- function(x) {
 
 extract_suffixes <- function(x) {
   find_matches(
-    x, 
+    x,
     pattern = paste0(
-      "(?<=\\d{1,2})[", 
-      paste(facs_suffixes, collapse = ""), 
+      "(?<=\\d{1,2})[",
+      paste(facs_suffixes, collapse = ""),
       "]$"
     )
   )
@@ -48,7 +48,7 @@ extract_suffixes <- function(x) {
 
 find_matches <- function(x, pattern) {
   matches <- regexpr(pattern, x, perl = TRUE)
-  result <- rep(NA_character_, length(x)) 
+  result <- rep(NA_character_, length(x))
   result[matches > 0] <- regmatches(x, matches)
   result
 }
@@ -61,7 +61,7 @@ occurrence <- function(x, scheme) {
   stopifnot(length(scheme$occurrence) > 0)
   # Initialize the output matrix
   out <- matrix(0, nrow = length(x), ncol = length(scheme$occurrence))
-  colnames(out) <- paste0("O", scheme$occurrence)
+  colnames(out) <- autopad(scheme$occurrence, prefix = "O")
   rownames(out) <- seq_along(x)
   # Populate the matrix
   tidy_x <- tidy(x)
@@ -82,7 +82,7 @@ intensity <- function(x, scheme, type = "numerical") {
   type <- match.arg(type, choices = c("numerical", "character"))
   # Initialize the output matrix
   out <- matrix(0, nrow = length(x), ncol = length(scheme$intensity))
-  colnames(out) <- paste0("I", scheme$intensity)
+  colnames(out) <- autopad(scheme$intensity, prefix = "I")
   rownames(out) <- seq_along(x)
   # Populate the matrix
   tidy_x <- tidy(x)
@@ -113,11 +113,11 @@ asymmetry <- function(x, scheme) {
   stopifnot(length(scheme$asymmetry) > 0)
   # Initialize the output matrix
   out <- matrix(
-    NA_character_, 
-    nrow = length(x), 
+    NA_character_,
+    nrow = length(x),
     ncol = length(scheme$asymmetry)
   )
-  colnames(out) <- paste0("A", scheme$asymmetry)
+  colnames(out) <- autopad(scheme$asymmetry, prefix = "A")
   rownames(out) <- seq_along(x)
   # Populate the matrix
   tidy_x <- tidy(x)
