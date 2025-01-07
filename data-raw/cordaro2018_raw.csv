@@ -1,24 +1,24 @@
-﻿emotion,type,code,special
-amusement,ICP,6+7+12+16+25+(26|27)+53,
-awe,ICP,1+2+5+12+25+(26|27)+53,
-contentment,ICP,12+43,deep breath
-coyness,ICP,6+7+12+25+54,
-desire food,ICP,7+12+25+(26|27),
-desire sex,ICP,6+7+12+25,
-happiness,ICP,6+7+12+16+25+(26|27),
-interest,ICP,85,
-pride,ICP,7+12+53,sit up straight
-relief,ICP,12+18+25+(26|27)+43,"head up or down, breath out"
-surprise,ICP,1+2+5+25+(26|27),
-triumph,ICP,6+7+12+25+(26|27),fist in air
-anger,ICP,4+7,
-boredom,ICP,43,head up or down
-confused,ICP,4+7,head tilt
-contempt,ICP,4+14+25,
-disgust,ICP,4+6+7+9+10+25+(26|27),
-embarrassment,ICP,6+7+12+25+54,control smile
-fear,ICP,1+2+5+7+25+(26|27),move back
-pain,ICP,4+6+7+20+25+43,head up or down
-sadness,ICP,4+43+54,
-shame,ICP,4+17+54,
-sympathy,ICP,25+(26|27)+57,
+﻿emotion,type,required,alternatives,special
+amusement,ICP,6+7+12+16+25+53,"26,27",
+awe,ICP,1+2+5+12+25+53,"26,27",
+contentment,ICP,12+43,,deep breath
+coyness,ICP,6+7+12+25+54,,
+desire food,ICP,7+12+25,"26,27",
+desire sex,ICP,6+7+12+25,,
+happiness,ICP,6+7+12+16+25,"26,27",
+interest,ICP,85,,
+pride,ICP,7+12+53,,sit up straight
+relief,ICP,12+18+25+43,"26,27","head up or down, breath out"
+surprise,ICP,1+2+5+25,"26,27",
+triumph,ICP,6+7+12+25,"26,27",fist in air
+anger,ICP,4+7,,
+boredom,ICP,43,,head up or down
+confused,ICP,4+7,,head tilt
+contempt,ICP,4+14+25,,
+disgust,ICP,4+6+7+9+10+25,"26,27",
+embarrassment,ICP,6+7+12+25+54,,control smile
+fear,ICP,1+2+5+7+25,"26,27",move back
+pain,ICP,4+6+7+20+25+43,,head up or down
+sadness,ICP,4+43+54,,
+shame,ICP,4+17+54,,
+sympathy,ICP,25+57,"26,27",

@@ -1,40 +1,24 @@
-#' Compare two codings on occurrence
-#'
-#' Compare two FACS codings on which AUs are present vs. absent. Uses the Wexler
-#' formula recommended in the 2002 FACS Investigator's Guide.
-#'
-#' Let \eqn{P} be the number of (unique) AUs that occur in both the `x` and `y`
-#' codings and let \eqn{Q} be the total number of (non-unique) AUs that occur in
-#' `x` and `y`. Wexler's formula is simply \eqn{2P/Q}.
-#'
-#' \deqn{A = \frac{2|A \cap B|}{|A| + |B|}}
-#'
-#' @param x,y A pair of coding objects created by [coding()].
-#' @return A numeric vector containing the agreement scores between each
-#'   corresponding element of `x` and `y`.
-#' @examples
-#' compare_occurrence(coding("1+4+9"), coding("1+4+10"))
 #' @export
-compare_occurrence <- function(x, y) {
-  # Validate input
-  stopifnot(class(x) == "facs_coding")
-  stopifnot(class(y) == "facs_coding")
-  stopifnot(length(x) == length(y))
-  # Preallocate output vector
-  out <- rep(NA_real_, times = length(x))
-  # Tidy both sets of codes
-  tidy_x <- tidy(x)
-  tidy_y <- tidy(y)
-  # For each code in both sets...
-  for (i in seq_along(x)) {
-    # Extract occurrence
-    xo <- tidy_x[[i]]$occurrence
-    yo <- tidy_y[[i]]$occurrence
-    # Apply Wexler's formula
-    out[[i]] <- (length(intersect(xo, yo)) * 2) / length(c(xo, yo))
-  }
-  # Return
-  out
+agree_description <- function(
+  ...,
+  scheme,
+  event_names = NULL,
+  coder_names = NULL
+) {
+  occ_rel <- prep_occ_reliability(
+    ...,
+    scheme = scheme,
+    event_names = event_names,
+    coder_names = coder_names
+  )
+  new_agree(
+    overall = agree_overall(occ_rel),
+    per_event = agree_per_event(occ_rel),
+    per_code = agree_per_code(occ_rel),
+    per_pair = agree_per_pair(occ_rel),
+    drop_one = agree_drop_one(occ_rel),
+    scheme = scheme
+  )
 }
 
 prep_occ_reliability <- function(
@@ -121,29 +105,6 @@ agree_drop_one <- function(occ_rel) {
 
 agree_overall <- function(occ_rel) {
   mean(agree_per_event(occ_rel), na.rm = TRUE)
-}
-
-#' @export
-agree_description <- function(
-  ...,
-  scheme,
-  event_names = NULL,
-  coder_names = NULL
-) {
-  occ_rel <- prep_occ_reliability(
-    ...,
-    scheme = scheme,
-    event_names = event_names,
-    coder_names = coder_names
-  )
-  new_agree(
-    overall = agree_overall(occ_rel),
-    per_event = agree_per_event(occ_rel),
-    per_code = agree_per_code(occ_rel),
-    per_pair = agree_per_pair(occ_rel),
-    drop_one = agree_drop_one(occ_rel),
-    scheme = scheme
-  )
 }
 
 # agree ------------------------------------------------------------------------

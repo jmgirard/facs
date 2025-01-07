@@ -1,8 +1,7 @@
 ## code to prepare `du2014` dataset goes here
-du2014 <- 
-  read.csv("data-raw/du2014_raw.csv") |> 
+du2014 <-
+  read.csv("data-raw/du2014_raw.csv") |>
   dplyr::mutate(
-    du1, 
     required2 = expand_strings(required, delim = ","),
     optional2 = expand_strings(optional, delim = ","),
     code = purrr::map2(
@@ -10,10 +9,10 @@ du2014 <-
       .y = optional2,
       expand_optional
     )
-  ) |> 
-  tidyr::unnest(cols = code) |> 
-  dplyr::select(emotion, emo_type, code) |> 
-  dplyr::mutate(source = "du2014", .before = 1) |> 
+  ) |>
+  tidyr::unnest(cols = code) |>
+  dplyr::select(emotion, emo_type, code) |>
+  dplyr::mutate(source = "du2014", .before = 1) |>
   dplyr::mutate(
     .by = emotion,
     config_num = dplyr::row_number(),

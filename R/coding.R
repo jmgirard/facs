@@ -6,6 +6,7 @@ new_coding <- function(x = character()) {
 }
 
 validate_coding <- function(x) {
+  # TODO: Check for duplicates (e.g., "1+1+2")
   # Extract attributes
   scheme <- attr(x, "scheme")
   # Remove all whitespace characters

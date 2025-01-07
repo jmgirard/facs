@@ -23,23 +23,47 @@ expand_optional <- function(required, optional, stringify = TRUE) {
   out
 }
 
-get_subsets <- function(vec) {
+expand_alternatives <- function(required, alternatives, stringify = TRUE) {
   # Validate input
-  stopifnot(is.vector(vec))
-  # Generate all subsets of vec including empty and full sets
-  n <- length(vec)
-  if (n == 1) {
-    # Generate manually if n == 1 due to how combn(x) handles single integers
-    out <- list(vector(mode = typeof(vec), length = 0), vec)
-  } else if (n > 1) {
+  stopifnot(is.vector(required))
+  stopifnot(is.vector(alternatives))
+  stopifnot(rlang::is_bool(stringify))
+  # Generate all subsets of alternative elements
+  alternative_subsets <- get_subsets(alternatives, drop_empty = TRUE)
+  if (length(alternative_subsets) == 0) {
+    out <- list(unique(sort_by_numeric(required)))
+  } else {
     out <- lapply(
-      X = 0:n,
-      FUN = function(m) combn(vec, m, simplify = FALSE)
+      X = alternative_subsets,
+      FUN = function(alt) unique(sort_by_numeric(c(required, alt)))
+    )
+  }
+  # If requested, stringify the output
+  if (stringify) {
+    out <- lapply(
+      X = out,
+      FUN = function(x) paste(x, collapse = "+")
     )
     out <- unlist(out, recursive = FALSE)
-  } else {
-    out <- list(vector(mode = typeof(vec), length = 0))
   }
+  # Return
+  out
+}
+
+get_subsets <- function(vec, drop_empty = FALSE, drop_full = FALSE) {
+  # Validate input
+  stopifnot(is.vector(vec))
+  # Coerce to character to prevent issues with combn(x) when x is a scalar
+  cvec <- as.character(vec)
+  # Find all combinations including empty (0) and full (n)
+  out <- lapply(
+    X = 0:length(cvec),
+    function(m) combn(cvec, m, simplify = FALSE)
+  )
+  out <- unlist(out, recursive = FALSE)
+  # Drop empty and/or full sets if requested
+  if (drop_empty) out <- out[-1]
+  if (drop_full) out <- out[-length(out)]
   # Return
   out
 }
