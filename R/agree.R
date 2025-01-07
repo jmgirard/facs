@@ -43,7 +43,6 @@ prep_occ_reliability <- function(
   event_names = NULL,
   coder_names = NULL
 ) {
-  #TODO: Deal with inconsistent sizes with missing values
   inputs <- list(...)
   if (is.null(event_names)) {
     event_names <- autopad(seq_along(inputs[[1]]), prefix = "E")
