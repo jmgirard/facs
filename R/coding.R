@@ -21,7 +21,6 @@ validate_coding <- function(x, error = TRUE) {
       paste(paste0('(', which(!ccx), ') "', x[!ccx], '"'), collapse = ", ")
     )
     if (error) {
-
       cli::cli_abort(msg)
     } else {
       cli::cli_alert_danger(msg)
@@ -66,4 +65,11 @@ check_coding <- function(x) {
 print.facs_coding <- function(x, ...) {
   print.default(unclass(x))
   cat("FACS Coding\n")
+}
+
+#' @method `[` facs_coding
+#' @export
+`[.facs_coding` <- function(x, i, ...) {
+  result <- NextMethod("[")
+  structure(result, class = class(x))
 }
