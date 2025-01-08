@@ -5,7 +5,7 @@ new_coding <- function(x = character()) {
   out
 }
 
-validate_coding <- function(x) {
+validate_coding <- function(x, error = TRUE) {
   # TODO: Check for duplicates (e.g., "1+1+2")
   # Extract attributes
   scheme <- attr(x, "scheme")
@@ -16,12 +16,17 @@ validate_coding <- function(x) {
   # Check for unallowed characters
   ccx <- check_coding(x)
   if (!all(ccx)) {
-    cli::cli_abort(
-      paste0(
-        "The following elements of `x` are not valid FACS codes: ",
-        paste(paste0('(', which(!ccx), ') "', x[!ccx], '"'), collapse = ", ")
-      )
+    msg <- paste0(
+      "The following elements of `x` are not valid FACS codes: ",
+      paste(paste0('(', which(!ccx), ') "', x[!ccx], '"'), collapse = ", ")
     )
+    if (error) {
+
+      cli::cli_abort(msg)
+    } else {
+      cli::cli_alert_danger(msg)
+      x[!ccx] <- NA_character_
+    }
   }
   # Split on plus signs
   x <- strsplit(x, split = "+", fixed = TRUE)
@@ -36,8 +41,8 @@ validate_coding <- function(x) {
 }
 
 #' @export
-coding <- function(x) {
-  validate_coding(x)
+coding <- function(x, error = TRUE) {
+  validate_coding(x, error = error)
 }
 
 #' @export
