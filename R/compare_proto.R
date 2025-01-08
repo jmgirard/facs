@@ -1,5 +1,10 @@
 #' @export
-compare_to_prototypes <- function(x, scheme, sources = "fig2002") {
+compare_to_prototypes <- function(
+  x,
+  scheme,
+  sources = c("cordaro2018", "du2014", "fig2002", "keltner2019", "matsumoto2008"),
+  warn = TRUE
+) {
   # Validate input
   stopifnot(length(x) == 1)
   stopifnot(class(x) == "facs_coding")
@@ -15,6 +20,7 @@ compare_to_prototypes <- function(x, scheme, sources = "fig2002") {
     ),
     several.ok = TRUE
   )
+  stopifnot(rlang::is_bool(warn))
   # Filter down to selected sources
   proto <- prototypes[prototypes$source %in% sources, ]
   # Preallocate output vector
@@ -40,16 +46,18 @@ compare_to_prototypes <- function(x, scheme, sources = "fig2002") {
   proto_codes <- unlist(lapply(tidy_p, function(y) y$occurrence))
   proto_codes <- sort(as.integer(unique(proto_codes)))
   scheme_codes <- scheme$occurrence
-  outside <- setdiff(proto_codes, scheme_codes)
-  if (length(outside) > 0) {
-    cli::cli_warn(
-      paste0(
-        "The following codes are present in one or more of the selected ",
-        "prototypes but were not included in your coding scheme: [",
-        paste(outside, collapse = ","),
-        "]. This will cause some prototype match scores to be NA.\n"
+  if (warn) {
+    outside <- setdiff(proto_codes, scheme_codes)
+    if (length(outside) > 0) {
+      cli::cli_warn(
+        paste0(
+          "The following codes are present in one or more of the selected ",
+          "prototypes but were not included in your coding scheme: [",
+          paste(outside, collapse = ","),
+          "]. This will cause some prototype match scores to be NA.\n"
+        )
       )
-    )
+    }
   }
   # For each code in both sets...
   for (i in seq_along(tidy_p)) {
