@@ -7,6 +7,7 @@ facs_prefixes <- c(
   "R",  # unilateral: right only
   "T",  # unilateral: top only
   "B",  # unilateral: bottom only
+  "S",  # symmetrical
   "A",  # asymmetrical (generic)
   "V",  # asymmetrical: left greater by 1
   "W",  # asymmetrical: left greater by 2
@@ -41,4 +42,3 @@ facs_characters <- paste0(
   c(sort(unique(c(facs_prefixes, facs_suffixes))), "0-9\\+"), collapse = ""
 )
 usethis::use_data(facs_characters, overwrite = TRUE)
-
