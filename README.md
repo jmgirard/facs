@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# protofacs
+# facs
 
 <!-- badges: start -->
 
@@ -9,23 +9,23 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of protofacs is to provide tools for storing and manipulating
+The goal of {facs} is to provide tools in R for storing and manipulating
 data from the Facial Action Coding System (FACS) 2002 edition.
 
 ## Installation
 
-You can install the development version of protofacs from
+You can install the development version of {facs} from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("pak")
-pak::pak("jmgirard/protofacs")
+pak::pak("jmgirard/facs")
 ```
 
 ## Example
 
 ``` r
-library("protofacs")
+library("facs")
 ```
 
 ### Step 1: Define your coding scheme

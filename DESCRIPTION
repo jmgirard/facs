@@ -1,7 +1,7 @@
-Package: protofacs
-Title: Compare FACS Codes to Emotion Prototypes
+Package: facs
+Title: Work with Facial Action Coding System (FACS) Data
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R:
     person(
         given = "Jeffrey",
         family = "Girard",
@@ -14,16 +14,16 @@ License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-Imports: 
+Imports:
     cli,
     generics,
     rlang
-Suggests: 
+Suggests:
     dplyr,
     purrr,
     testthat (>= 3.0.0),
     tidyr
 Config/testthat/edition: 3
-Depends: 
+Depends:
     R (>= 3.5)
 LazyData: true
