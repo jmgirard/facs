@@ -73,3 +73,10 @@ print.facs_coding <- function(x, ...) {
   result <- NextMethod("[")
   structure(result, class = class(x))
 }
+
+#' @method `[[` facs_coding
+#' @export
+`[[.facs_coding` <- function(x, i, ...) {
+  result <- NextMethod("[[")
+  structure(result, class = class(x))
+}
