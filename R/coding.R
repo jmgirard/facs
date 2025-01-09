@@ -57,7 +57,8 @@ validate_coding <- function(x, error = TRUE) {
           '"'
         ),
         collapse = ", "
-      )
+      ),
+      ". Check `facs_exclusives` for the full list of exclusive codes."
     )
     if (error) {
       cli::cli_abort(msg)
