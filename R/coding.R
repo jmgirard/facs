@@ -33,11 +33,7 @@ validate_coding <- function(x, error = TRUE) {
       "The following elements of `x` contain repeated FACS codes: ",
       paste(
         paste0(
-          '(',
-          which(!cdx),
-          ') "',
-          paste(x[!cdx][[1]], collapse = "+"),
-          '"'
+          '(', which(!cdx), ') "', paste(x[!cdx][[1]], collapse = "+"), '"'
         ),
         collapse = ", "
       )
@@ -47,6 +43,27 @@ validate_coding <- function(x, error = TRUE) {
     } else {
       cli::cli_alert_danger(msg)
       x[!cdx] <- NA_character_
+    }
+  }
+  # Check for exclusive codes
+  cex <- check_exclusives(x)
+  if (!all(cex)) {
+    msg <- paste0(
+      "The following elements of `x` contain mutually-exclusive FACS codes: ",
+      paste(
+        paste0(
+          '(', which(!cex), ') "',
+          sapply(x[!cex], function(x) paste(x, collapse = "+")),
+          '"'
+        ),
+        collapse = ", "
+      )
+    )
+    if (error) {
+      cli::cli_abort(msg)
+    } else {
+      cli::cli_alert_danger(msg)
+      x[!cex] <- NA_character_
     }
   }
   # Sort by numeric components
@@ -82,6 +99,12 @@ check_coding <- function(x) {
 
 check_duplicates <- function(x) {
   sapply(x, function(x) length(x) == length(unique(x)))
+}
+
+check_exclusives <- function(x) {
+  sapply(x, function(vec) {
+    !any(apply(facs_exclusives, MARGIN = 1, function(row) all(row %in% vec)))
+  })
 }
 
 #' @method print facs_coding
