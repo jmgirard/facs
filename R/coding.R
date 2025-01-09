@@ -6,9 +6,6 @@ new_coding <- function(x = character()) {
 }
 
 validate_coding <- function(x, error = TRUE) {
-  # TODO: Check for duplicates (e.g., "1+1+2")
-  # Extract attributes
-  scheme <- attr(x, "scheme")
   # Remove all whitespace characters
   x <- gsub("\\s+", "", x)
   # Capitalize all letters
@@ -29,6 +26,29 @@ validate_coding <- function(x, error = TRUE) {
   }
   # Split on plus signs
   x <- strsplit(x, split = "+", fixed = TRUE)
+  # Check for duplicated codes
+  cdx <- check_duplicates(x)
+  if (!all(cdx)) {
+    msg <- paste0(
+      "The following elements of `x` contain repeated FACS codes: ",
+      paste(
+        paste0(
+          '(',
+          which(!cdx),
+          ') "',
+          paste(x[!cdx][[1]], collapse = "+"),
+          '"'
+        ),
+        collapse = ", "
+      )
+    )
+    if (error) {
+      cli::cli_abort(msg)
+    } else {
+      cli::cli_alert_danger(msg)
+      x[!cdx] <- NA_character_
+    }
+  }
   # Sort by numeric components
   x <- lapply(x, sort_by_numeric)
   # Recombine into string
@@ -58,6 +78,10 @@ check_coding <- function(x) {
     "]?)*$"
   )
   grepl(pattern, x) | is.na(x)
+}
+
+check_duplicates <- function(x) {
+  sapply(x, function(x) length(x) == length(unique(x)))
 }
 
 #' @method print facs_coding

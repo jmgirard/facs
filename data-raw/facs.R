@@ -42,3 +42,6 @@ facs_characters <- paste0(
   c(sort(unique(c(facs_prefixes, facs_suffixes))), "0-9\\+"), collapse = ""
 )
 usethis::use_data(facs_characters, overwrite = TRUE)
+
+facs_exclusives <- read.csv("data-raw/facs_exclusives.csv")
+usethis::use_data(facs_exclusives, overwrite = TRUE)
