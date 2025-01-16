@@ -99,7 +99,12 @@ check_coding <- function(x) {
 }
 
 check_duplicates <- function(x) {
-  sapply(x, function(x) length(x) == length(unique(x)))
+  sapply(x, function(x) {
+    # Remove all letters from the string
+    x <- gsub("[A-Z]", "", x)
+    # Check for duplicates
+    length(x) == length(unique(x))
+  })
 }
 
 check_exclusives <- function(x) {
