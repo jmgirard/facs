@@ -16,5 +16,7 @@ prototypes <-
     code,
     special
   ) |>
-  dplyr::mutate(special = dplyr::na_if(special, ""))
+  dplyr::mutate(special = dplyr::na_if(special, "")) |> 
+  dplyr::mutate(code = coding(code, error = FALSE)) |> 
+  tidyr::drop_na(code)
 usethis::use_data(prototypes, overwrite = TRUE)
