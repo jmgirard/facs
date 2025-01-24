@@ -13,6 +13,8 @@ cordaro2018 <-
   tidyr::unnest(cols = code) |>
   dplyr::select(emotion, code, config_type, special) |>
   dplyr::mutate(source = "cordaro2018", .before = 1) |>
+  dplyr::mutate(code = coding(code, error = FALSE)) |> 
+  tidyr::drop_na(code) |> 
   dplyr::mutate(
     .by = emotion,
     .before = config_type,

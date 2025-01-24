@@ -13,6 +13,8 @@ matsumoto2008 <-
   tidyr::unnest(cols = code) |>
   dplyr::select(emotion, code, special) |>
   dplyr::mutate(source = "matsumoto2008", .before = 1) |>
+  dplyr::mutate(code = coding(code, error = FALSE)) |> 
+  tidyr::drop_na(code) |> 
   dplyr::mutate(
     .by = emotion,
     .after = code,
