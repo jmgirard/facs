@@ -36,14 +36,9 @@ extract_numcodes <- function(x) {
 }
 
 extract_suffixes <- function(x) {
-  find_matches(
-    x,
-    pattern = paste0(
-      "(?<=\\d{1,2})[",
-      paste(facs_suffixes, collapse = ""),
-      "]$"
-    )
-  )
+  pattern <- paste0("\\d{1,2}([", paste(facs_suffixes, collapse = ""), "])$")
+  full_matches <- find_matches(x, pattern)
+  sub("^\\d{1,2}", "", full_matches)
 }
 
 find_matches <- function(x, pattern) {
