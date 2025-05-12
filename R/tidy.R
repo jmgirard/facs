@@ -149,3 +149,10 @@ asymmetry <- function(x, scheme) {
   # Return
   out
 }
+
+#' @export
+pull_numcodes <- function(x) {
+  y <- strsplit(x, split = "+", fixed = TRUE)[[1]]
+  numcodes <- extract_numcodes(y)
+  as.integer(numcodes)
+}
