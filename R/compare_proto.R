@@ -2,27 +2,15 @@
 compare_to_prototypes <- function(
   x,
   scheme,
-  sources = c("cordaro2018", "du2014", "fig2002", "keltner2019", "matsumoto2008"),
+  proto = prototypes,
   warn = TRUE
 ) {
   # Validate input
   stopifnot(length(x) == 1)
   stopifnot(class(x) == "facs_coding")
   stopifnot(class(scheme) == "facs_scheme")
-  sources <- match.arg(
-    sources,
-    choices = c(
-      "cordaro2018",
-      "du2014",
-      "fig2002",
-      "keltner2019",
-      "matsumoto2008"
-    ),
-    several.ok = TRUE
-  )
   stopifnot(rlang::is_bool(warn))
   # Filter down to selected sources
-  proto <- prototypes[prototypes$source %in% sources, ]
   # Preallocate output vector
   out <- rep(NA_real_, times = nrow(proto))
   if (length(sources) > 1) {
