@@ -13,7 +13,7 @@ compare_to_prototypes <- function(
   # Filter down to selected sources
   # Preallocate output vector
   out <- rep(NA_real_, times = nrow(proto))
-  if (length(sources) > 1) {
+  if (length(unique(proto$source) > 1)) {
     names(out) <- paste(
       proto$source,
       proto$emotion,
