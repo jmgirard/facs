@@ -3,13 +3,13 @@ compare_to_prototypes <- function(
   x,
   scheme,
   proto = prototypes,
-  warn = TRUE
+  uncoded = c("warn", "error", "omit")
 ) {
   # Validate input
   stopifnot(length(x) == 1)
   stopifnot(class(x) == "facs_coding")
   stopifnot(class(scheme) == "facs_scheme")
-  stopifnot(rlang::is_bool(warn))
+  uncoded <- match.arg(uncoded, c("warn", "error", "omit"), FALSE)
   # Filter down to selected sources
   # Preallocate output vector
   out <- rep(NA_real_, times = nrow(proto))
@@ -34,8 +34,8 @@ compare_to_prototypes <- function(
   proto_codes <- unlist(lapply(tidy_p, function(y) y$occurrence))
   proto_codes <- sort(as.integer(unique(proto_codes)))
   scheme_codes <- scheme$occurrence
-  if (warn) {
-    outside <- setdiff(proto_codes, scheme_codes)
+  outside <- setdiff(proto_codes, scheme_codes)
+  if (uncoded == "warn") {
     if (length(outside) > 0) {
       cli::cli_warn(
         paste0(
@@ -46,11 +46,25 @@ compare_to_prototypes <- function(
         )
       )
     }
+  } else if (uncoded == "error") {
+    if (length(outside) > 0) {
+      cli::cli_abort(
+        paste0(
+          "The following codes are present in one or more of the selected ",
+          "prototypes but were not included in your coding scheme: [",
+          paste(outside, collapse = ","),
+          "].\n"
+        )
+      )
+    }
   }
   # For each code in both sets...
   for (i in seq_along(tidy_p)) {
     # Extract occurrence
     po <- tidy_p[[i]]$occurrence
+    if (uncoded == "omit") {
+      po <- setdiff(po, as.character(outside))
+    }
     if (all(po %in% scheme$occurrence)) {
       # Calculate dice coefficient
       out[[i]] <- (length(intersect(xo, po)) * 2) / length(c(xo, po))
