@@ -25,111 +25,62 @@ compare_to_prototypes <- function(
   uncoded = c("warn", "error", "omit"),
   output = c("all", "exact", "closest")
 ) {
-  # Validate input
   stopifnot(class(x) == "facs_coding")
   stopifnot(class(scheme) == "facs_scheme")
   uncoded <- match.arg(uncoded, c("warn", "error", "omit"), FALSE)
-  output <- match.arg(output, c("all", "exact", "closest"), FALSE)
-  
-  # Preallocate output vector
-  out <- rep(NA_real_, times = nrow(proto))
-  if (length(unique(proto$source)) > 1) {
-    names(out) <- paste(
-      proto$source,
-      proto$emotion,
-      proto$config_num,
-      sep = "_"
-    )
-  } else {
-    names(out) <- paste(
-      proto$emotion,
-      proto$config_num,
-      sep = "_"
-    )
-  }
-  
+  output  <- match.arg(output,  c("all", "exact", "closest"), FALSE)
+
   # Tidy both sets of codes
   xlist <- occ_list(tidy(x))
   plist <- occ_list(tidy(coding(proto$code)))
-  names(plist) <- names(out)
-  
-  # Check for codes not in scheme
+  names(plist) <- if (length(unique(proto$source)) > 1) {
+    paste(proto$source, proto$emotion, proto$config_num, sep = "_")
+  } else {
+    paste(proto$emotion, proto$config_num, sep = "_")
+  }
+
+  # Handle prototype codes not in the scheme
   scheme_codes <- scheme$occurrence
-  
-  proto_codes <- sort(unique(unlist(plist)))
-  outside_proto <- setdiff(proto_codes, scheme_codes)
-  
-  x_codes <- sort(unique(unlist(xlist)))
-  outside_x <- setdiff(x_codes, scheme_codes)
-  
-  if (uncoded == "warn") {
-    if (length(outside_proto) > 0) {
-      cli::cli_warn(
-        paste0(
-          "The following codes are present in one or more of the selected ",
-          "prototypes but were not included in your coding scheme: [",
-          paste(outside_proto, collapse = ", "),
-          "]. This will cause some prototype match scores to be NA.\n"
-        )
-      )
-    }
-    if (length(outside_x) > 0) {
-      cli::cli_warn(
-        paste0(
-          "The following codes are present in `x` but were not included ",
-          "in your coding scheme: [",
-          paste(outside_x, collapse = ", "),
-          "]. This will cause some prototype match scores to be NA.\n"
-        )
-      )
-    }
-  } else if (uncoded == "error") {
-    if (length(outside_proto) > 0) {
-      cli::cli_abort(
-        paste0(
-          "The following codes are present in one or more of the selected ",
-          "prototypes but were not included in your coding scheme: [",
-          paste(outside_proto, collapse = ", "),
-          "].\n"
-        )
-      )
-    }
-    if (length(outside_x) > 0) {
-      cli::cli_abort(
-        paste0(
-          "The following codes are present in `x` but were not included ",
-          "in your coding scheme: [",
-          paste(outside_x, collapse = ", "),
-          "].\n"
-        )
-      )
-    }
+  outside <- setdiff(sort(unique(unlist(plist))), scheme_codes)
+  if (uncoded == "warn" && length(outside) > 0) {
+    cli::cli_warn(paste0(
+      "These codes appear in prototypes but not your scheme: [",
+      paste(outside, collapse = ","), "]. Affected match scores will be NA.\n"
+    ))
+  } else if (uncoded == "error" && length(outside) > 0) {
+    cli::cli_abort(paste0(
+      "These codes appear in prototypes but not your scheme: [",
+      paste(outside, collapse = ","), "].\n"
+    ))
   } else if (uncoded == "omit") {
     plist <- lapply(plist, function(p) p[p %in% scheme_codes])
-    xlist <- lapply(xlist, function(xi) xi[xi %in% scheme_codes])
+    empty <- lengths(plist) == 0
+    if (any(empty)) {
+      cli::cli_inform(paste0(
+        "Dropped ", sum(empty), " prototype(s) with no in-scheme AUs ",
+        "(unassessable in this scheme): [",
+        paste(names(plist)[empty], collapse = ", "), "].\n"
+      ))
+      plist <- plist[!empty]
+    }
   }
-  
-  # Loop through xlist...
+
+  # Dice coefficient of each observed coding vs each prototype
   out <- lapply(xlist, function(xi) {
-    # Loop through plist...
-    sapply(plist, function(pi) {
-      # Calculate Dice coefficient
-      (length(intersect(xi, pi)) * 2) / length(c(xi, pi))
-    })
+    vapply(plist, function(pi) {
+      denom <- length(xi) + length(pi)
+      if (denom == 0) NA_real_ else (length(intersect(xi, pi)) * 2) / denom
+    }, numeric(1))
   })
-  
+
   # Reduce output if requested
   if (output == "exact") {
-    out <- lapply(out, function(xi) xi[xi == 1])
+    out <- lapply(out, function(xi) xi[!is.na(xi) & xi == 1])
   } else if (output == "closest") {
-    out <- lapply(out, function(xi) xi[xi == max(xi, na.rm = TRUE)])
+    out <- lapply(out, function(xi) {
+      m <- suppressWarnings(max(xi, na.rm = TRUE))
+      if (!is.finite(m) || m == 0) xi[0] else xi[!is.na(xi) & xi == m]
+    })
   }
-  
-  # Return
   out
-}
-
-# Convert
-occ_list <- function(x) {
-  lapply(x, function(df) as.integer(df[["occurrence"]]))
 }
