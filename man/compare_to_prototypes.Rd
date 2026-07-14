@@ -21,9 +21,9 @@ coded and in which ways (i.e., occurrence, intensity, asymmetry).}
 \item{proto}{A FUNCTION TO CREATE PROTOTYPES NEEDS TO BE MADE.}
 
 \item{uncoded}{A string indicating how to handle the situation where a
-prototype contains an AU that wasn't included in the scheme. "warn"
-provides a warning and an NA value, "error" provides an error and stops,
-and "omit" drops the uncoded AU before calculating the Dice coefficient.}
+prototype or coding contains an AU that wasn't included in the scheme.
+"warn" provides a warning and an NA value, "error" provides an error and
+stops, and "omit" drops the uncoded AU before calculating the Dice coefficient.}
 
 \item{output}{A string indicating what to return. "all" returns the Dice
 coefficients for all prototypes, "exact" returns only the prototypes where
