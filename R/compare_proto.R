@@ -8,7 +8,7 @@
 #' @param proto A FUNCTION TO CREATE PROTOTYPES NEEDS TO BE MADE.
 #' @param uncoded A string indicating how to handle the situation where a
 #'   prototype or coding contains an AU that wasn't included in the scheme.
-#'   "warn" provides a warning and an NA value, "error" provides an error and 
+#'   "warn" provides a warning and an NA value, "error" provides an error and
 #'   stops, and "omit" drops the uncoded AU before calculating the Dice coefficient.
 #' @param output A string indicating what to return. "all" returns the Dice
 #'   coefficients for all prototypes, "exact" returns only the prototypes where
@@ -28,7 +28,7 @@ compare_to_prototypes <- function(
   stopifnot(class(x) == "facs_coding")
   stopifnot(class(scheme) == "facs_scheme")
   uncoded <- match.arg(uncoded, c("warn", "error", "omit"), FALSE)
-  output  <- match.arg(output,  c("all", "exact", "closest"), FALSE)
+  output <- match.arg(output, c("all", "exact", "closest"), FALSE)
 
   # Tidy both sets of codes
   xlist <- occ_list(tidy(x))
@@ -45,21 +45,26 @@ compare_to_prototypes <- function(
   if (uncoded == "warn" && length(outside) > 0) {
     cli::cli_warn(paste0(
       "These codes appear in prototypes but not your scheme: [",
-      paste(outside, collapse = ","), "]. Affected match scores will be NA.\n"
+      paste(outside, collapse = ","),
+      "]. Affected match scores will be NA.\n"
     ))
   } else if (uncoded == "error" && length(outside) > 0) {
     cli::cli_abort(paste0(
       "These codes appear in prototypes but not your scheme: [",
-      paste(outside, collapse = ","), "].\n"
+      paste(outside, collapse = ","),
+      "].\n"
     ))
   } else if (uncoded == "omit") {
     plist <- lapply(plist, function(p) p[p %in% scheme_codes])
     empty <- lengths(plist) == 0
     if (any(empty)) {
       cli::cli_inform(paste0(
-        "Dropped ", sum(empty), " prototype(s) with no in-scheme AUs ",
+        "Dropped ",
+        sum(empty),
+        " prototype(s) with no in-scheme AUs ",
         "(unassessable in this scheme): [",
-        paste(names(plist)[empty], collapse = ", "), "].\n"
+        paste(names(plist)[empty], collapse = ", "),
+        "].\n"
       ))
       plist <- plist[!empty]
     }
@@ -67,10 +72,14 @@ compare_to_prototypes <- function(
 
   # Dice coefficient of each observed coding vs each prototype
   out <- lapply(xlist, function(xi) {
-    vapply(plist, function(pi) {
-      denom <- length(xi) + length(pi)
-      if (denom == 0) NA_real_ else (length(intersect(xi, pi)) * 2) / denom
-    }, numeric(1))
+    vapply(
+      plist,
+      function(pi) {
+        denom <- length(xi) + length(pi)
+        if (denom == 0) NA_real_ else (length(intersect(xi, pi)) * 2) / denom
+      },
+      numeric(1)
+    )
   })
 
   # Reduce output if requested
@@ -83,4 +92,9 @@ compare_to_prototypes <- function(
     })
   }
   out
+}
+
+# Convert
+occ_list <- function(x) {
+  lapply(x, function(df) as.integer(df[["occurrence"]]))
 }

@@ -5,7 +5,7 @@
 \alias{scheme_full}
 \title{Full coding scheme will all FACS codes}
 \format{
-An object created by \code{\link[=scheme]{scheme()}}
+An object created by \code{scheme()}
 }
 \usage{
 scheme_full

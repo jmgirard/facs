@@ -39,5 +39,5 @@
 #' For user convenience, `scheme_full` is provided that contains occurrence,
 #' intensity, and asymmetry coding for all codes possible in FACS 2002.
 #'
-#' @format An object created by [scheme()]
+#' @format An object created by `scheme()`
 "scheme_full"
